@@ -1,31 +1,4 @@
-﻿Year,Population1,"Violent
-crime","Violent 
-crime 
-rate ","Murder and
-nonnegligent 
-manslaughter","Murder and 
-nonnegligent 
-manslaughter 
-rate ","Rape
-(legacy
-definition)2","Rape
-(legacy
-definition)2
-rate",Robbery,"Robbery 
-rate ","Aggravated 
-assault","Aggravated 
-assault rate ","Property 
-crime","Property 
-crime 
-rate ",Burglary,"Burglary 
-rate ","Larceny-
-theft","Larceny-
-theft rate ","Motor 
-vehicle 
-theft","Motor 
-vehicle 
-theft 
-rate ",, ,,
+﻿Year,Population,Violent_crime,Violent_crime_rate,Murder_and_nonnegligent_manslaughter,Murder_and_nonnegligent_manslaughter_rate,Rape,Rape_rate,Robbery,Robbery_rate,Aggravated_assault,Aggravated_assault_rate,Property_crime,Property_crime_rate,Burglary,Burglary_rate,Larceny_theft,Larceny_theft_rate,Motor_vehicle_theft,Motor_vehicle_theft_rate,, ,,
 1994,260327021,1857670,714,23326,9,102216,39,618949,238,1113179,428,12131873,4660,2712774,1042,7879812,3027,1539287,591,,,,
 1995,262803276,1798792,685,21606,8,97470,37,580509,221,1099207,418,12063935,4591,2593784,987,7997710,3043,1472441,560,,,,
 1996,265228572,1688540,637,19645,7,96252,36,535594,202,1037049,391,11805323,4451,2506400,945,7904685,2980,1394238,526,,,,
@@ -51,3 +24,7 @@ rate ",, ,,
 2016,323405935,1250162,387,17413,5,96970,30,332797,103,802982,248,7928530,2452,1516405,469,5644835,1745,767290,237,,,,
 2017,325147121,1247917,384,17294,5,99708,31,320596,99,810319,249,7682988,2363,1397045,430,5513000,1696,772943,238,,,,
 2018,327167434,1206836,369,16214,5,101151,31,282061,86,807410,247,7196045,2200,1230149,376,5217055,1595,748841,229,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+ar,,,,,,,,,,,,,,,,,,,,,,,
