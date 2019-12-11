@@ -1,0 +1,378 @@
+---
+title: "DATA 606 Final Project"
+author: "Samuel I Kigamba"
+date: "December 10, 2019"
+output:
+  html_document:
+    code_folding: hide
+    css: null
+    highlight: pygments
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+  always_allow_html: yes
+  ioslides_presentation: default
+  pdf_document: default
+  slidy_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## load libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(XML)
+library(RCurl)
+library(knitr)
+library(dplyr)
+library(plyr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(sqldf)
+library(tidyr)
+library(plotly)
+library(tidyverse)
+library(tidyselect)
+library(data.table)
+library(readxl)
+library(fBasics)
+library(lattice)
+library(MASS)
+
+```
+
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+# Objective of the Study
+
+### Correlation between Total Crime and Population size
+
+Population size and crime rate have historically been seen as closely related functions of one another. We seek to answer the question on whether high populations translates to high crime rates. As population grows so does crime rates in most coutries due to the governments inability to create sustaining environment to support the usually rapid population growths resulting into higher crime rates.
+
+The main objective of this project is to study the relationship and correlation between population size and crime rate in the United States between the year 1994 to 2018.
+
+# Data source and nature
+
+### Cases
+
+Each case represents the population size and crime rate in a given year within our period of study. The full dataset represents data for 25 years with approximately 25 cases.
+
+### Data Collection
+
+The data is collected from the FBI Website which provides free historical data on population size and crime.
+Link >>>>> https://ucr.fbi.gov/crime-in-the-u.s
+
+### Type of study
+
+This is observational study.
+
+### Data Source
+
+The dataset for this project is downloaded from the FBI website on crime rates in the US for the period from 1994 to 2018:
+
+Link >>>>> https://ucr.fbi.gov/crime-in-the-u.s/2013/crime-in-the-u.s.-2013/tables/1tabledatadecoverviewpdf/table_1_crime_in_the_united_states_by_volume_and_rate_per_100000_inhabitants_1994-2013.xls
+ 
+
+### Response
+
+Crime rate is the response variable. It is numerical continuous variable.
+
+### Explanatory
+
+The explanatory variable is the population size and is numerical.
+
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+# Data Load
+
+Crimes data is loaded directly from the csv file uploaded into my Github.
+
+```{r, message=FALSE, warning=FALSE}
+
+crime_data = read_csv(file="https://raw.githubusercontent.com/igukusamuel/DATA-607-Final-Project/master/CrimeData.csv")
+
+head(crime_data[ ,1:5])
+
+```
+
+### Data Transformtion, Cleanup and Preparation:
+
+
+#### Tidy data, add Total_crime column.
+```{r, message=FALSE, warning=FALSE}
+
+#Select columns relevant to our analysis [1:20 only].
+#Note Column 21:24 are empty
+
+crime_data <- crime_data[, 1:20]
+
+# Add a column on Total_crime (Violent_crime + Property_crime)
+
+crime_data <- crime_data %>% mutate(Total_crime = (Violent_crime + Property_crime))
+
+# Add a column on Crime_ratio (Population / Total_crime)
+
+crime_data <- crime_data %>% mutate(Crime_rate = (Total_crime / Population)*100)
+
+# Print out all column names to confirm the two just added
+
+names(crime_data)
+
+```
+
+#### Select only columns that are relevant for our purpose.
+```{r, message=FALSE, warning=FALSE}
+
+crime_data1 <- dplyr::select(crime_data, Year, Population, Total_crime, Crime_rate)
+
+head(crime_data1)
+
+```
+
+
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+
+# Data Visualization:
+
+#### Population Data plot
+```{r, message=FALSE, warning=FALSE}
+Population <-
+   ggplot(crime_data1, aes(Year, Population, group = 1)) + 
+   geom_line(linetype = "dashed", color = "red") +
+        geom_point()+
+   ggtitle("Population between 1994 - 2018") +
+   xlab("Years") + ylab("Population") +
+   theme(
+     plot.title = element_text(color="blue", size=15, face="bold.italic"),
+     axis.text.x = element_text(angle=60, hjust=1),
+     axis.title.x = element_text(color="blue", size=15, face="bold"),
+     axis.title.y = element_text(color="blue", size=15, face="bold")
+   )
+ 
+ggplotly(Population)
+
+```
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+#### Population Histogram and Density plot
+```{r}
+
+histogram(~ Population, data = crime_data1)
+
+densityplot(~ Population, data = crime_data1)
+
+```
+
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+#### Total crime Data plot
+```{r, message=FALSE, warning=FALSE}
+Total_Crime <-
+   ggplot(crime_data1, aes(Year, Total_crime, group = 1)) + 
+   geom_line(linetype = "dashed", color = "red") +
+        geom_point()+
+   ggtitle("Total_crime between 1994 - 2018") +
+   xlab("Years") + ylab("Total_crime") +
+   theme(
+     plot.title = element_text(color="blue", size=15, face="bold.italic"),
+     axis.text.x = element_text(angle=60, hjust=1),
+     axis.title.x = element_text(color="blue", size=15, face="bold"),
+     axis.title.y = element_text(color="blue", size=15, face="bold")
+   )
+ 
+ggplotly(Total_Crime)
+
+```
+
+
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+#### Total_crime Histogram and Density Plot
+```{r, message=FALSE, warning=FALSE}
+histogram(~ Total_crime, data = crime_data1)
+
+densityplot(~ Total_crime, data = crime_data1)
+
+```
+
+
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+#### Crime Rate Data plot
+```{r, message=FALSE, warning=FALSE}
+Crime_Rate <-
+   ggplot(crime_data1, aes(Year, Crime_rate, group = 1)) + 
+   geom_line(linetype = "dashed", color = "red") +
+        geom_point()+
+   ggtitle("Crime_Rate between 1994 - 2018") +
+   xlab("Years") + ylab("Crime_Rate") +
+   theme(
+     plot.title = element_text(color="blue", size=15, face="bold.italic"),
+     axis.text.x = element_text(angle=60, hjust=1),
+     axis.title.x = element_text(color="blue", size=15, face="bold"),
+     axis.title.y = element_text(color="blue", size=15, face="bold")
+   )
+
+ggplotly(Crime_Rate)
+
+```
+
+
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+#### Crime Rate Histogram and Density Plot
+```{r, message=FALSE, warning=FALSE}
+
+histogram(~ Crime_rate, data = crime_data1)
+
+densityplot(~ Crime_rate, data = crime_data1)
+
+```
+
+
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+# Statistical Analysis:
+
+### TEST: Population vs Crime_rate
+
+#### In this section we will create a linear regression model to see if there exists a strong relationship between population and Crime_rate.
+
+#### We create a function to calculate the correlation between population and Crime_rate.
+```{r, message=FALSE, warning=FALSE}
+findCorrelation <- function() {
+  x = crime_data1$Crime_rate
+  y = crime_data1$Population
+  corr = round(cor(x, y),4)
+  print (paste0("Correlation = ",corr))
+  return (corr)
+}
+
+c = findCorrelation()
+
+```
+
+#### We create a function for Linear Model
+```{r, message=FALSE, warning=FALSE}
+
+findStatsFunction <- function() {
+  m = lm (Crime_rate ~ Population, data = crime_data1)
+  s = summary(m)
+  print(s)
+  
+  slp = round(m$coefficients[2], 4)
+  int = round(m$coefficients[1], 4)
+
+  return (m)
+}
+m = findStatsFunction()
+
+```
+
+\[ Crimerate = 14.85 + (-3.718e-8)(Population) \]
+
+
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+#### Display the Linear Model
+
+```{r, message=FALSE, warning=FALSE}
+plot = ggplot(crime_data1, aes(Crime_rate, Population, group = 1)) +
+  geom_point(colour="blue") +
+  xlab("Population Size") +
+  ylab("Total Crime") +
+  labs(title = "Population Size vs Total Crime") +
+  geom_abline(aes(slope=round(m$coefficients[2], 4), intercept=round(m$coefficients[1], 4), color="red"))
+
+print(plot)
+
+```
+
+#### There is a negative relationship between population increase and the rate of crime.
+
+
+### Regression Statistics
+
+*Linear Regression Equation:*
+
+\[ Crimerate = 14.85 + (-3.718-8)(Population) \]
+
+*Note:* The intercept is outside the data range, however it fits the data well within the residual standard error for all points within our dataset.
+
+*Multiple R-Square:*0.9694
+
+*R-Square:*0.968
+
+*Description:* The model fits the data well with a strong negative correlation.
+
+
+#### Hypothesis Testing
+
+*H_0 :* 	 Null Hypothesis 	 There is no relationship between Crime_rate and population.
+
+*H_A :* 	 Alternative Hypothesis 	 There is a relationship between Crime_rate and population.
+
+Here the multiple R value is 0.9694 which shows that there is significant correlation between Crime_rate and Population. Also the value of R square is 0.968 which shows the extent to which the Total_Crime affects the Population. Therefore, we reject the null hypothesis H_0 and accept the Alternative hypothesis H_A.
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+# Conclusion:
+
+We notice that the two variables, Crime_rate and Population, change in the opposite direction. An decrease in Crime_rate leads to an increase in population and vice versa. Therefore, there is a negative correlation between the two variables.
+
+Also, from the linear regression model, we reject the null hypothesis and accept the alternative hypothesis. We conclude that there is a strong relationship between Crime_rate and Population for the 25 year period of study (1994-2018).
+
+
+--------------------------------------------------------------------------------
+
+\clearpage
+
+
+
