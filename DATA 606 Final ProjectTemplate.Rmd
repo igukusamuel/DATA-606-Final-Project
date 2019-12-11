@@ -1,0 +1,115 @@
+---
+title: "DATA 606 Final Project"
+author: "Samuel I Kigamba"
+date: "December 9, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=FALSE}
+# load data
+
+```
+
+
+### Part 1 - Introduction
+
+
+### Part 2 - Data
+
+
+### Part 3 - Exploratory data analysis
+
+
+### Part 4 - Inference
+
+
+### Part 5 - Conclusion
+
+
+### References
+
+
+### Appendix (optional)
+
+Remove this section if you don't have an appendix
+
+
+
+## TEST: Population vs Crime Ratio
+
+In this section we will create a linear regression model to see if there exists a strong relationship between population and Crime Ratio.
+
+### Create a function to calculate the correlation between population and Crime Ratio and round it to 4 decimal digits
+
+```{r, message=FALSE, warning=FALSE}
+findCorrelation <- function() {
+  x = crime_data1$Population
+  y = crime_data1$Crime_ratio
+  corr = round(cor(x, y),4)
+  print (paste0("Correlation = ",corr))
+  return (corr)
+}
+
+c = findCorrelation()
+
+```
+
+### Create a function for Linear Model for Population vs Crime_ratio
+
+```{r, message=FALSE, warning=FALSE}
+
+findStatsFunction <- function() {
+  m = lm (Population ~ Crime_ratio, data = crime_data1)
+  s = summary(m)
+  print(s)
+  
+  slp = round(m$coefficients[2], 4)
+  int = round(m$coefficients[1], 4)
+
+  return (m)
+}
+m = findStatsFunction()
+
+```
+
+\[ Population^ = 198426094 + (3596492 ??? Crime_ratio) \]
+
+
+### Display the Linear Model
+
+```{r, message=FALSE, warning=FALSE}
+plot = ggplot(crime_data1, aes(Crime_ratio, Population, group = 1)) +
+  geom_point(colour="blue") +
+  xlab("Total Crime") +
+  ylab("Population Size") +
+  labs(title = "Population Size vs Crime Ratio") +
+  geom_abline(aes(slope=round(m$coefficients[2], 4), intercept=round(m$coefficients[1], 4), color="red"))
+
+print(plot)
+
+```
+
+### Regression Statistics
+
+Linear Regression Equation:
+
+\[ Population^ = 198426094 + (3596492 ??? Crime_ratio) \]
+
+Multiple R-Square:0.9352
+
+R-Square:0.9323
+
+Description:Strong correlation Model fits the data.
+
+
+Hypothesis Testing
+
+H_0 : 	 Null Hypothesis 	 There is no relationship between Crime Ratio and population.
+H_A : 	 Alternative Hypothesis 	 There is a relationship between Crime Ratio and population.
+
+Here the multiple R value is 0.9352 which shows that there is significant correlation between Crime Ratio and population. Also the value of R square is 0.9352 which shows the extent to which the Crime Ratio affects the population. Therefore, we reject the null hypothesis (H_0) and accept the Alternative hypothesis (H_1).

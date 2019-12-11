@@ -45,12 +45,6 @@ library(MASS)
 
 ```
 
-
---------------------------------------------------------------------------------
-
-\clearpage
-
-
 # Objective of the Study
 
 ### Correlation between Total Crime and Population size
@@ -60,10 +54,6 @@ Population size and crime rate have historically been seen as closely related fu
 The main objective of this project is to study the relationship and correlation between population size and crime rate in the United States between the year 1994 to 2018.
 
 # Data source and nature
-
-### Cases
-
-Each case represents the population size and crime rate in a given year within our period of study. The full dataset represents data for 25 years with approximately 25 cases.
 
 ### Data Collection
 
@@ -89,6 +79,10 @@ Crime rate is the response variable. It is numerical continuous variable.
 
 The explanatory variable is the population size and is numerical.
 
+### Cases
+
+Each case represents the population size and crime rate in a given year within our period of study. The full dataset represents data for 25 years with approximately 25 cases.
+
 
 --------------------------------------------------------------------------------
 
@@ -101,7 +95,7 @@ Crimes data is loaded directly from the csv file uploaded into my Github.
 
 ```{r, message=FALSE, warning=FALSE}
 
-crime_data = read_csv(file="https://raw.githubusercontent.com/igukusamuel/DATA-607-Final-Project/master/CrimeData.csv")
+crime_data = read_csv(file="https://raw.githubusercontent.com/igukusamuel/DATA-606-Final-Project/master/CrimeData.csv")
 
 head(crime_data[ ,1:5])
 
@@ -322,14 +316,14 @@ m = findStatsFunction()
 #### Display the Linear Model
 
 ```{r, message=FALSE, warning=FALSE}
-plot = ggplot(crime_data1, aes(Crime_rate, Population, group = 1)) +
+lmodel = ggplot(crime_data1, aes(Population, Crime_rate, group = 1)) +
   geom_point(colour="blue") +
-  xlab("Population Size") +
-  ylab("Total Crime") +
-  labs(title = "Population Size vs Total Crime") +
+  xlab("Crime_rate") +
+  ylab("Population Size") +
+  labs(title = "Population Size vs Crime_rate") +
   geom_abline(aes(slope=round(m$coefficients[2], 4), intercept=round(m$coefficients[1], 4), color="red"))
 
-print(plot)
+ggplotly(lmodel)
 
 ```
 
@@ -369,6 +363,17 @@ We notice that the two variables, Crime_rate and Population, change in the oppos
 
 Also, from the linear regression model, we reject the null hypothesis and accept the alternative hypothesis. We conclude that there is a strong relationship between Crime_rate and Population for the 25 year period of study (1994-2018).
 
+# References
+
+https://ucr.fbi.gov/crime-in-the-u.s
+https://ucr.fbi.gov/crime-in-the-u.s/2013/crime-in-the-u.s.-2013/tables/1tabledatadecoverviewpdf/table_1_crime_in_the_united_states_by_volume_and_rate_per_100000_inhabitants_1994-2013.xls
+http://rpubs.com/igukusamuel/558552
+https://raw.githubusercontent.com/igukusamuel/DATA-606-Final-Project/master/CrimeData.csv
+https://github.com/igukusamuel/DATA-606-Final-Project/blob/master/DATA%20606%20Final%20Project.Rmd
+https://github.com/igukusamuel/DATA-606-Final-Project/blob/master/DATA-606-Final-Project.html
+https://github.com/igukusamuel/DATA-606-Final-Project/blob/master/Project%20Proposal.Rmd
+https://bookdown.org/yihui/rmarkdown/slidy-presentation.html
+https://ucr.fbi.gov/crime-in-the-u.s/2018/crime-in-the-u.s.-2018/tables/table-1
 
 --------------------------------------------------------------------------------
 
